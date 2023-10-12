@@ -1,0 +1,91 @@
+{% load widget_tweaks %}
+<form hx-target="this" hx-post="{{ request.path }}" hx-swap="innerHTML">
+    {% if form.errors %}
+    <ul class="notification is-danger is-light">
+        {% for error in form.errors.values %}
+        {{ error.as_text }}
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% csrf_token %}
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">Тип счета</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="select is-fullwidth">
+                    {% render_field form.type %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">Название банка</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    {% render_field form.bank_name class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">Адрес банка</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    {% render_field form.bank_address class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">BIC</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    {% render_field form.bic class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">IBAN</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    {% render_field form.iban class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label">
+            <!-- Left empty for spacing -->
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <button class="button is-link">{{ client|yesno:"Сохранить,Добавить" }}</button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+</form>

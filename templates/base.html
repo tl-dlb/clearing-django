@@ -1,0 +1,83 @@
+{% spaceless %}
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="htmx-config" content='{"historyCacheSize": 0, "refreshOnHistoryMiss": false}'>
+
+            <title>Клиринг</title>
+            <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Titillium+Web:700|Source+Serif+Pro:400,700|Merriweather+Sans:400,700|Source+Sans+Pro:400,300,600,700,300italic,400italic,600italic,700italic">
+            <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@creativebulma/bulma-divider@1.1.0/dist/bulma-divider.min.css">
+
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+            <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+            <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+            <script src="https://unpkg.com/htmx.org@1.6.1"
+                integrity="sha384-tvG/2mnCFmGQzYC1Oh3qxQ7CkQ9kMzYjWZSNtrRZygHPDDqottzEJsqS4oUVodhW"
+                crossorigin="anonymous"></script>
+            <script src="https://unpkg.com/alpinejs@3.7.1/dist/cdn.min.js"
+                defer
+                integrity="sha384-KLv/Yaw8nAj6OXX6AvVFEt1FNRHrfBHziZ2JzPhgO9OilYrn6JLfCR4dZzaaQCA5"
+                crossorigin="anonymous"></script>
+
+        </head>
+        <body hx-boost="true">
+            
+            <nav class="navbar is-link" role="navigation" aria-label="main navigation">
+                <div class="container">
+                    <div class="navbar-brand">
+                        <a class="navbar-item is-size-5 has-text-weight-semibold" href="{% url 'home' %}">
+                            Клиринг
+                        </a>
+                    
+                        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                        </a>
+                    </div>
+
+                    {% with url_name=request.resolver_match.url_name %}
+                        <div id="navbarMenu" class="navbar-menu">
+                            <div class="navbar-end">
+                                <a class="navbar-item{% if url_name == 'client_list' %} is-active{% endif %} is-size-6 has-text-weight-semibold" 
+                                    href="{% url 'client_list' %}">
+                                    <span class="icon mr-1">
+                                        <ion-icon name="people-outline"></ion-icon>
+                                    </span>
+                                    <span>Все клиенты</span>
+                                </a>
+                                <a class="navbar-item{% if url_name == 'create_client' %} is-active{% endif %} is-size-6 has-text-weight-semibold" 
+                                    href="{% url 'create_client' %}">
+                                    <span class="icon mr-1">
+                                        <ion-icon name="person-add-outline"></ion-icon>
+                                    </span>
+                                    <span>Добавить клиента</span>
+                                </a>
+                                <a class="navbar-item{% if url_name == 'history' %} is-active{% endif %} is-size-6 has-text-weight-semibold" 
+                                    href="{% url 'history' %}">
+                                    <span class="icon mr-1">
+                                        <ion-icon name="list-outline"></ion-icon>
+                                    </span>
+                                    <span>Реестр сделок</span>
+                                </a>
+                                {% if user.is_authenticated %}
+
+                                {% else %}
+
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endwith %}
+                </div>
+            </nav>
+        
+            {% block content %}{% endblock %}
+
+        </body>
+    </html>
+{% endspaceless %}

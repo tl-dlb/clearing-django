@@ -1,0 +1,164 @@
+{% load widget_tweaks %}
+<form hx-target="this" hx-post="{{ request.path }}" hx-swap="innerHTML">
+    {% if form.errors %}
+    <ul class="notification is-danger is-light">
+        {% for error in form.errors.values %}
+        {{ error.as_text }}
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% csrf_token %}
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">Тип</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="select is-fullwidth">
+                    {% render_field form.type %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">ОП форма</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="select is-fullwidth">
+                    {% render_field form.legal_form %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">Название</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    {% render_field form.name class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">БИН</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    {% render_field form.bin class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <hr />
+
+    <p class="is-size-5 has-text-weight-semibold mb-4">Почтовый адрес</p>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">Страна</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="select is-fullwidth">
+                    {% render_field form.country class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">Почтовый индекс</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    {% render_field form.postal_code class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">Адрес</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    {% render_field form.address class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <hr />
+
+    <p class="is-size-5 has-text-weight-semibold mb-4">Контакты</p>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">E-mail</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    {% render_field form.email class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">Телефон</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    {% render_field form.phone class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">Контактное лицо</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    {% render_field form.person class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label">
+            <!-- Left empty for spacing -->
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <button class="button is-link">{{ client|yesno:"Сохранить,Добавить" }}</button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+</form>

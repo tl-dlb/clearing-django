@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="list-page" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <div class="container py-4">
+        <div class="columns">
+            <div class="column">
+
+                <form class="mb-4"
+                    hx-get="{% url 'client_list_search' %}" 
+                    hx-target="#client-list"
+                    hx-trigger="submit, input delay:0.3s" 
+                    hx-swap="outerHTML">
+
+                    <div class="columns">
+                        <div class="column is-one-third">
+                            <div class="control">
+                                <input name="search" type="text" class="input" placeholder="Телефон, ИИН, БИН, ФИО" />
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+                
+                {% include "clients/_client_list.html" %}
+
+                <!-- <hr> -->
+
+                <!-- <div class="columns">
+                    <div class="column is-one-quarter">
+                        <div class="control">
+                            <input name="from" type="text" class="input datetime" placeholder="Добавлен с" />
+                        </div>
+                    </div>
+                    <div class="column is-one-quarter">
+                        <div class="control">
+                            <input name="to" type="text" class="input datetime" placeholder="Добавлен по" />
+                        </div>
+                    </div>
+                    <div class="column is-one-quarter">
+                        <button class="button is-link">
+                            <span class="icon">
+                                <ion-icon name="cloud-download-outline"></ion-icon>
+                            </span> 
+                            <span>Выгрузить</span>
+                        </button>
+                    </div>
+
+                </div> -->
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+flatpickr('.datetime', {locale: 'ru', dateFormat: 'd.m.Y'});
+</script>
+
+{% endblock content %}
+
+
