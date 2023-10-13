@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class HistoryConfig(AppConfig):
+class companiesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'clearing.history'
+    name = 'clearing.companies'

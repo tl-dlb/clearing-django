@@ -1,0 +1,72 @@
+<div id="company-list">
+    <div class="table-container">
+        <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Роль</th>
+                    <th>Название</th>
+                    <th>БИН</th>
+                    <th>Внесено</th>
+                    <th>Заморожено</th>
+                    <th>Заблокировано</th>
+                    <th>Свободно</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if companies %}
+                    {% for company in companies %}
+                        <tr>
+                            <td>{{ company.get_type_display }}</td>
+                            <td><a href="{% url 'company_detail' company.id %}">{{ company.full_name }}</a></td>
+                            <td>{{ company.bin|default_if_none:"--" }}</td>
+                            <td>{{ company.wallet.deposited_amount }}</td>
+                            <td>{{ company.wallet.holding_amount }}</td>
+                            <td>{{ company.wallet.locked_amount }}</td>
+                            <td>{{ company.wallet.available_amount }}</td>
+                            <td>{{ company.get_status_display }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="9">Ничего не найдено</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <nav class="pagination is-right" role="navigation" aria-label="pagination">
+        {% if companies.has_previous  %}
+            <a class="pagination-previous"
+                hx-get="{% url 'company_list_search' %}" 
+                hx-trigger="click"
+                hx-target="#company-list"
+                hx-swap="outerHTML"
+                hx-vals='{"page": "{{ companies.previous_page_number }}", "search": "{{ search }}"}'
+                >Пред.
+            </a>
+        {% else %}
+            <a class="pagination-previous is-disabled">Пред.</a>
+        {% endif %}
+        
+        {% if companies.has_next %}
+            <a class="pagination-next"
+                hx-get="{% url 'company_list_search' %}" 
+                hx-trigger="click"
+                hx-target="#company-list"
+                hx-swap="outerHTML"
+                hx-vals='{"page": "{{ companies.next_page_number }}", "search": "{{ search }}"}'
+                >След.
+            </a>
+        {% else %}
+            <a class="pagination-next is-disabled">След.</a>
+        {% endif %}
+        <ul class="pagination-list"></ul>
+    </nav>
+
+    {% if companies.paginator.count %}
+        <div class="block">
+            <span class="is-size-6">{{ companies.start_index }} - {{ companies.end_index }} из {{ companies.paginator.count }}</span>
+        </div>
+    {% endif %}
+    
+</div>

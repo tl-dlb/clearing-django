@@ -1,9 +1,9 @@
 from django import forms
 
-from .models import Client, BankAccount
+from .models import Company, BankAccount
 
 
-CLIENT_TYPE_CHOICES = (
+COMPANY_TYPE_CHOICES = (
     ('--', '--'),
     ('TRADER', 'Брокер'),
     ('DEALER', 'Дилер'),
@@ -18,7 +18,7 @@ COUNTRY_CHOICES = (
 )
 
 
-class ClientForm(forms.ModelForm):
+class CompanyForm(forms.ModelForm):
     country = forms.CharField(widget=forms.Select(choices=COUNTRY_CHOICES))
     postal_code = forms.CharField()
     address = forms.CharField()
@@ -26,26 +26,22 @@ class ClientForm(forms.ModelForm):
     phone = forms.CharField()
     person = forms.CharField()
     class Meta:
-        model = Client
+        model = Company
         fields = ["type", "legal_form", "name", "bin", "country", "postal_code", "address", "email", "phone", "person"]
         widgets = {
-            "type": forms.Select(choices=CLIENT_TYPE_CHOICES),
+            "type": forms.Select(choices=COMPANY_TYPE_CHOICES),
             "email": forms.EmailInput(),
         }
 
+        
 
-BANK_ACCOUNT_TYPE_CHOICES = (
-    ('--', '--'),
-    ('MAIN', 'Основной'),
-    ('CLEARING', 'Клиринговый'),
-)
 
 
 class BankAccountForm(forms.ModelForm):
     class Meta:
         model = BankAccount
-        fields = ["type", "bank_name", "bank_address", "bic", "iban"]
+        fields = ["bank_name", "bank_address", "bic", "iban"]
         widgets = {
-            "type": forms.Select(choices=BANK_ACCOUNT_TYPE_CHOICES),
+            
         }
 

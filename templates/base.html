@@ -44,19 +44,19 @@
                     {% with url_name=request.resolver_match.url_name %}
                         <div id="navbarMenu" class="navbar-menu">
                             <div class="navbar-end">
-                                <a class="navbar-item{% if url_name == 'client_list' %} is-active{% endif %} is-size-6 has-text-weight-semibold" 
-                                    href="{% url 'client_list' %}">
+                                <a class="navbar-item{% if url_name == 'company_list' %} is-active{% endif %} is-size-6 has-text-weight-semibold" 
+                                    href="{% url 'company_list' %}">
                                     <span class="icon mr-1">
                                         <ion-icon name="people-outline"></ion-icon>
                                     </span>
-                                    <span>Все клиенты</span>
+                                    <span>Все компании</span>
                                 </a>
-                                <a class="navbar-item{% if url_name == 'create_client' %} is-active{% endif %} is-size-6 has-text-weight-semibold" 
-                                    href="{% url 'create_client' %}">
+                                <a class="navbar-item{% if url_name == 'create_company' %} is-active{% endif %} is-size-6 has-text-weight-semibold" 
+                                    href="{% url 'create_company' %}">
                                     <span class="icon mr-1">
                                         <ion-icon name="person-add-outline"></ion-icon>
                                     </span>
-                                    <span>Добавить клиента</span>
+                                    <span>Добавить компанию</span>
                                 </a>
                                 <a class="navbar-item{% if url_name == 'history' %} is-active{% endif %} is-size-6 has-text-weight-semibold" 
                                     href="{% url 'history' %}">

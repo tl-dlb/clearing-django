@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "django_htmx",
     "widget_tweaks",
-    'clearing.clients',
-    'clearing.history',
+    'clearing.companies',
+    'clearing.wallets',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="article-page" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <div class="container py-4">
+        <div class="columns">
+            <div class="column">
+
+                <div class="box">
+                    <div class="columns is-flex is-vcentered">
+                        <div class="column is-narrow">
+                            <h5 class="is-size-5 has-text-weight-semibold">Компания</h5>
+                        </div>
+                        <div class="column is-narrow">
+                            <div class="buttons" x-data="{ status: '{{ company.status }}' }">
+                                <a href="{% url 'company_list' %}" class="button is-small is-outlined is-rounded">Назад</a>
+                                <a href="{% url 'edit_company' company.id %}" class="button is-small is-link is-outlined is-rounded">Редактировать</a>
+                                <a class="button is-small is-link is-outlined is-rounded"
+                                    hx-get="{% url 'invert_company_status' company.id %}"
+                                    hx-push-url="false"
+                                    hx-target="#company-detail-view"
+                                    hx-swap="outerHTML"
+                                    x-on:click="status = status == 'BLOCKED' || status == 'REVIEW' ? 'ACTIVE' : 'BLOCKED'" 
+                                    x-text="status == 'BLOCKED' || status == 'REVIEW' ? 'Активировать' : 'Заблокировать'">
+                                </a>
+                            </div>    
+                        </div>
+                    </div>
+                    {% include "companies/_company.html" %}
+                </div>
+                
+
+                <div class="box">
+                    <div class="columns is-flex is-vcentered">
+                        <div class="column is-narrow">
+                            <h5 class="is-size-5 has-text-weight-semibold">Банковские счета</h5>
+                        </div>
+                        <div class="column is-narrow">
+                            <a href="{% url 'create_bank_accounts' company.id %}" class="button is-small is-primary is-outlined is-rounded">Добавить</a>
+                        </div>
+                    </div>
+    
+                    <div class="table-container">
+                        <table class="table is-bordered is-fullwidth">
+                            <thead>
+                                <tr>
+                                    <th style="width:25%;">Название банка</th>
+                                    <th style="width:25%;">Адрес банка</th>
+                                    <th style="width:25%;">BIC</th>
+                                    <th style="width:25%;">IBAN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if bank_accounts %}
+                                    {% for account in bank_accounts %}
+                                        <tr>
+                                            <td>{{ account.bank_name }}</td>
+                                            <td>{{ account.bank_address }}</td>
+                                            <td>{{ account.bic }}</td>
+                                            <td>{{ account.iban }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr><td colspan="5">Ничего не найдено</td></tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <div class="columns is-flex is-vcentered">
+                        <div class="column is-narrow">
+                            <h5 class="is-size-5 has-text-weight-semibold">Клиринговый счёт</h5>
+                        </div>
+                        <div class="column is-narrow">
+                            <div class="buttons">
+                                <a href="{% url 'create_bank_accounts' company.id %}" class="button is-small is-primary is-outlined is-rounded">Внести</a>
+                                <a href="{% url 'create_bank_accounts' company.id %}" class="button is-small is-danger is-outlined is-rounded">Снять</a>
+                            </div>                      
+                        </div>
+                    </div>
+    
+                    <div class="table-container">
+                        <table class="table is-bordered is-fullwidth">
+                            <thead>
+                                <tr>
+                                    <th style="width:15%;">Номер счёта</th>
+                                    <th style="width:15%;">Номер договора</th>
+                                    <th style="width:15%;">Внесено</th>
+                                    <th style="width:15%;">Заморожено</th>
+                                    <th style="width:15%;">Заблокировано</th>
+                                    <th style="width:15%;">Свободно</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ company.wallet.account_number }}</td>
+                                    <td>{{ company.wallet.account_number }}</td>
+                                    <td>{{ company.wallet.deposited_amount }}</td>
+                                    <td>{{ company.wallet.holding_amount }}</td>
+                                    <td>{{ company.wallet.locked_amount }}</td>
+                                    <td>{{ company.wallet.available_amount }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <div class="columns is-flex is-vcentered">
+                        <div class="column is-narrow">
+                            <h5 class="is-size-5 has-text-weight-semibold">Cчета по трёхстороннему договору</h5>
+                        </div>
+                        <div class="column is-narrow">
+                            <div class="buttons">
+                                <a href="{% url 'create_bank_accounts' company.id %}" class="button is-small is-primary is-outlined is-rounded">Создать</a>
+                            </div>                      
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table is-bordered is-fullwidth">
+                            <thead>
+                                <tr>  
+                                    <th style="width:15%;">Номер счёта</th>
+                                    <th style="width:15%;">Клиент брокера</th>
+                                    <th style="width:15%;">Внесено</th>
+                                    <th style="width:15%;">Заморожено</th>
+                                    <th style="width:15%;">Заблокировано</th>
+                                    <th style="width:15%;">Свободно</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ company.wallet.account_number }}</td>
+                                    <td>{{ company.wallet.account_number }}</td>
+                                    <td>{{ company.wallet.deposited_amount }}</td>
+                                    <td>{{ company.wallet.holding_amount }}</td>
+                                    <td>{{ company.wallet.locked_amount }}</td>
+                                    <td>{{ company.wallet.available_amount }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

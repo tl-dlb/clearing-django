@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="editor-page">
-    <div class="container py-4">
+    <div class="container box mt-4">
         <div class="columns">
             <div class="column">
                 <div class="columns is-flex is-vcentered">
@@ -10,11 +10,11 @@
                     </div>
                     <div class="column is-narrow">
                         <div class="buttons">
-                            <a href="{% url 'client_detail' client.id %}" class="button is-small is-outlined is-rounded">Назад</a>
+                            <a href="{% url 'company_detail' company.id %}" class="button is-small is-outlined is-rounded">Назад</a>
                         </div>    
                     </div>
                 </div>
-                {% include "clients/_bank_account_form.html" %}
+                {% include "companies/_bank_account_form.html" %}
             </div>
         </div>
     </div>

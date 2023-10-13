@@ -4,14 +4,14 @@ from django.db import models
 from clearing.core.models import UUIDModel, TimestampedModel
 
 
-CLIENT_TYPE_CHOICES = (
+COMPANY_TYPE_CHOICES = (
     ('TRADER', 'Брокер'),
     ('DEALER', 'Дилер'),
     ('CLIENT', 'Клиент'),
 )
 
 
-CLIENT_STATUS_CHOICES = (
+COMPANY_STATUS_CHOICES = (
     ('REVIEW', 'В обработке'),
     ('ACTIVE', 'Активный'),
     ('BLOCKED', 'Заблокирован'), 
@@ -53,18 +53,18 @@ class Info(UUIDModel, TimestampedModel):
     value: str = models.TextField()
 
 
-class Client(UUIDModel, TimestampedModel):
+class Company(UUIDModel, TimestampedModel):
     name: str   = models.TextField()
     bin: str    = models.CharField(max_length=12, unique=True, verbose_name='БИН')
-    type: str   = models.CharField(max_length=32, choices=CLIENT_TYPE_CHOICES)
+    type: str   = models.CharField(max_length=32, choices=COMPANY_TYPE_CHOICES)
     legal_form  = models.CharField(max_length=12, choices=LEGAL_FORM_CHOICES)
-    status: str = models.CharField(max_length=32, choices=CLIENT_STATUS_CHOICES, default='REVIEW')
+    status: str = models.CharField(max_length=32, choices=COMPANY_STATUS_CHOICES, default='REVIEW')
 
     bank_accounts: BankAccount = models.ManyToManyField(BankAccount, blank=True)
     info: Info                = models.ManyToManyField(Info, blank=True)
 
     class Meta:
-        verbose_name = 'Клиент'
+        verbose_name = 'Компания'
 
     @property
     def full_name(self):

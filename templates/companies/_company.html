@@ -1,36 +1,36 @@
-<table id="client-detail-view" class="table is-bordered is-striped is-hoverable is-fullwidth">
+<table id="company-detail-view" class="table is-bordered is-striped is-hoverable is-fullwidth">
     <tbody>
         <tr>
             <td style="width:25%;"><label class="label">Роль</label></td>
-            <td>{{ client.get_type_display }}</td>
+            <td>{{ company.get_type_display }}</td>
         </tr>
         <tr>
             <td><label class="label">Название</label></td>
-            <td>{{ client.full_name }}</td>
+            <td>{{ company.full_name }}</td>
         </tr>
         <tr>
             <td><label class="label">БИН</label></td>
-            <td>{{ client.bin }}</td>
+            <td>{{ company.bin }}</td>
         </tr>
         <tr>
             <td><label class="label">Адрес</label></td>
-            <td>{{ client.country.value }}, {{ client.postal_code.value }}, {{ client.address.value }}</td>
+            <td>{{ company.country.value }}, {{ company.postal_code.value }}, {{ company.address.value }}</td>
         </tr>
         <tr>
             <td><label class="label">E-mail</label></td>
-            <td>{{ client.email.value }}</td>
+            <td>{{ company.email.value }}</td>
         </tr>
         <tr>
             <td><label class="label">Телефон</label></td>
-            <td>{{ client.phone.value }}</td>
+            <td>{{ company.phone.value }}</td>
         </tr>
         <tr>
             <td><label class="label">Контактное лицо</label></td>
-            <td>{{ client.person.value }}</td>
+            <td>{{ company.person.value }}</td>
         </tr>
         <tr>
             <td><label class="label">Статус</label></td>
-            <td>{{ client.get_status_display }}</td>
+            <td>{{ company.get_status_display }}</td>
         </tr>
     </tbody>
 </table>
