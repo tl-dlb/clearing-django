@@ -11,7 +11,7 @@ from uuid import UUID
 
 from .forms import CompanyForm, BankAccountForm
 from .models import Company, Info
-from clearing.wallets.models import MainWallet
+from clearing.wallets.models import Wallet
 
 COMPANIES_PER_PAGE = 20
 
@@ -118,7 +118,7 @@ def create_company(request: HttpRequest) -> HttpResponse:
         company.info.add(phone)
         company.info.add(person)
 
-        wallet = MainWallet.objects.create(company=company)
+        wallet = Wallet.objects.create(trader=company)
         wallet.save()
 
         return HttpResponseClientRedirect(reverse("company_detail", kwargs={"company_id": company.id}))

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     "django_htmx",
     "widget_tweaks",
     'clearing.companies',
@@ -109,12 +110,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'ru-RU'
-
 TIME_ZONE = 'Asia/Almaty'
-
 USE_I18N = True
+USE_L10N = True
+USE_TZ   = True
+THOUSAND_SEPARATOR = ' '
+DECIMAL_SEPARATOR  = ','
 
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)

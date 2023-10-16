@@ -74,8 +74,8 @@
                         </div>
                         <div class="column is-narrow">
                             <div class="buttons">
-                                <a href="{% url 'create_bank_accounts' company.id %}" class="button is-small is-primary is-outlined is-rounded">Внести</a>
-                                <a href="{% url 'create_bank_accounts' company.id %}" class="button is-small is-danger is-outlined is-rounded">Снять</a>
+                                <a href="{% url 'create_fund' company.wallet.id 'INCOMING' %}" class="button is-small is-primary is-outlined is-rounded">Внести</a>
+                                <a href="{% url 'create_fund' company.wallet.id 'OUTGOING' %}" class="button is-small is-danger is-outlined is-rounded">Снять</a>
                             </div>                      
                         </div>
                     </div>
