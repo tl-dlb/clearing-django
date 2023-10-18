@@ -5,6 +5,11 @@ from clearing.core.models import UUIDModel, TimestampedModel
 from clearing.companies.models import Company
 
 
+FUNDS_PLATFORM_CHOICES = (
+    ('DVA', 'DVA'),
+    ('STD', 'STD'),
+)
+
 
 FUNDS_TYPE_CHOICES = (
     ('INCOMING', 'Входящие средства'),
@@ -20,12 +25,13 @@ FUND_PAYMENT_TYPE_CHOICES = (
 
 
 class Fund(UUIDModel, TimestampedModel):
-    type = models.CharField(max_length=32, choices=FUNDS_TYPE_CHOICES)
-    amount = models.DecimalField(default=0, max_digits=32, decimal_places=2)
-    is_active = models.BooleanField(default=True)
-    payment_number = models.TextField(null=True)
-    payment_type = models.CharField(max_length=32, choices=FUND_PAYMENT_TYPE_CHOICES, default='BANK_TRANSFER')
-    comment = models.TextField(null=True)
+    platform: str = models.CharField(max_length=32, choices=FUNDS_PLATFORM_CHOICES, default='DVA')
+    type: str  = models.CharField(max_length=32, choices=FUNDS_TYPE_CHOICES)
+    amount:float = models.DecimalField(default=0, max_digits=32, decimal_places=2)
+    is_active: bool = models.BooleanField(default=True)
+    payment_type: str = models.CharField(max_length=32, choices=FUND_PAYMENT_TYPE_CHOICES, default='BANK_TRANSFER')
+    payment_number: str = models.TextField(null=True)
+    comment: str = models.TextField(null=True)
 
 
 class Wallet(UUIDModel, TimestampedModel):

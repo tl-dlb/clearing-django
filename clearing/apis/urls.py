@@ -3,14 +3,16 @@ from rest_framework.routers import DefaultRouter
 
 from clearing.apis import views 
 
-wallet_router = DefaultRouter(trailing_slash=False)
-wallet_router.register('wallets', views.WalletView, basename='wallets')
+wallet_detail = views.WalletView.as_view({'get': 'retrieve'})
+fund_hold = views.FundView.as_view({'post': 'hold'})
+fund_free = views.FundView.as_view({'post': 'free'})
+fund_lock = views.FundView.as_view({'post': 'lock'})
 
-fund_router = DefaultRouter(trailing_slash=False)
-fund_router.register('funds', views.FundView, basename='funds')
 
 urlpatterns = [
-    path('', include(wallet_router.urls)),
-    path('', include(fund_router.urls)),
+    path('wallets/<str:bin>/', wallet_detail, name='wallet-detail'),
+    path('funds/hold', fund_hold, name='fund-hold'),
+    path('funds/free', fund_free, name='fund-lock'),
+    path('funds/lock', fund_lock, name='fund-lock'),
 ]
 

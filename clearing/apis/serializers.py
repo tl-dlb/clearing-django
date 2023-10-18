@@ -12,13 +12,22 @@ class WalletSerializer(serializers.ModelSerializer):
 
 
 class FundSerializer(serializers.ModelSerializer):
-    # account_number = serializers.CharField()
     class Meta:
         model = Fund
-        fields = ['type', 'amount', 'id']
-        # read_only_fields = ['account_number']
+        fields = ['id', 'type', 'amount', 'is_active']
+
 
 class HoldFundSerializer(serializers.Serializer):
+    platform = serializers.CharField()
     account_number = serializers.CharField()   
-    type = serializers.CharField()  
     amount = serializers.DecimalField(max_digits=32, decimal_places=2)
+
+
+class FreeFundSerializer(serializers.Serializer):
+    account_number = serializers.CharField()  
+    id = serializers.UUIDField()   
+
+
+class LockFundSerializer(serializers.Serializer):
+    account_number = serializers.CharField()  
+    id = serializers.UUIDField()   
