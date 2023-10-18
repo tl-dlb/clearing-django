@@ -6,7 +6,7 @@
             <div class="column">
                 <div class="columns is-flex is-vcentered">
                     <div class="column is-narrow">
-                        <h5 class="is-size-5 has-text-weight-semibold">{% if fund_type == 'INCOMING' %}Внести средства на счёт{% else %}Снять средства со счёта{% endif %}  компании {{ wallet.trader.full_name}}</h5>
+                        <h5 class="is-size-5 has-text-weight-semibold">{% if fund_type == 'INCOMING' %}Внести средства на счёт{% else %}Снять средства со счёта{% endif %} {{ wallet.account_number }}</h5>
                     </div>
                     <div class="column is-narrow">
                         <div class="buttons">

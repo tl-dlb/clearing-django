@@ -74,7 +74,7 @@
                         </div>
                         <div class="column is-narrow">
                             <div class="buttons">
-                                <a href="{% url 'fund_list' company.wallet.id  %}" class="button is-small is-info is-outlined is-rounded">Список операций</a>
+                                
                             </div>                      
                         </div>
                     </div>
@@ -83,8 +83,7 @@
                         <table class="table is-bordered is-fullwidth">
                             <thead>
                                 <tr>
-                                    <th style="width:15%;">Номер счёта</th>
-                                    <th style="width:15%;">Номер договора</th>
+                                    <th style="width:30%;">Номер счёта</th>
                                     <th style="width:15%;">Внесено</th>
                                     <th style="width:15%;">Заморожено</th>
                                     <th style="width:15%;">Заблокировано</th>
@@ -93,8 +92,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{ company.wallet.account_number }}</td>
-                                    <td>{{ company.wallet.account_number }}</td>
+                                    <td><a href="{% url 'fund_list' company.wallet.id  %}">{{ company.wallet.account_number }}</a></td>
                                     <td>{{ company.wallet.deposited_amount|intcomma }}</td>
                                     <td>{{ company.wallet.holding_amount|intcomma }}</td>
                                     <td>{{ company.wallet.locked_amount|intcomma }}</td>
@@ -105,7 +103,7 @@
                     </div>
                 </div>
 
-                <div class="box">
+                <!-- <div class="box">
                     <div class="columns is-flex is-vcentered">
                         <div class="column is-narrow">
                             <h5 class="is-size-5 has-text-weight-semibold">Cчета по трёхстороннему договору</h5>
@@ -141,7 +139,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> -->
 
             </div>
         </div>

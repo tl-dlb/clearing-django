@@ -12,6 +12,7 @@ from uuid import UUID
 from .forms import CompanyForm, BankAccountForm
 from .models import Company, Info
 from clearing.wallets.models import Wallet
+from clearing.core.models import Counter
 
 COMPANIES_PER_PAGE = 20
 
@@ -29,7 +30,7 @@ def history(request: HttpRequest) -> HttpResponse:
 
 
 @require_http_methods(["GET"])
-# @login_required
+@login_required
 def company_list(request: HttpRequest) -> HttpResponse:
 
     companies, search = _search_companies(request)
@@ -79,8 +80,11 @@ def _search_companies(request):
 
 
 @require_http_methods(["GET", "POST"])
-# @login_required
+@login_required
 def create_company(request: HttpRequest) -> HttpResponse:
+
+    if (counter := Counter.objects.filter(type='MAIN_WALLET').first()) is None:
+        return HttpResponseClientRedirect(reverse("company_list"))
 
     if request.method == "GET":
         return TemplateResponse(
@@ -118,8 +122,15 @@ def create_company(request: HttpRequest) -> HttpResponse:
         company.info.add(phone)
         company.info.add(person)
 
-        wallet = Wallet.objects.create(trader=company)
+        wallet = Wallet.objects.create(
+            trader=company, 
+            account_number='CLM-' + str(counter.value + 1).zfill(5),
+            contract_number=form.cleaned_data.get('contract_number'),
+        )
         wallet.save()
+
+        counter.value += 1
+        counter.save()
 
         return HttpResponseClientRedirect(reverse("company_detail", kwargs={"company_id": company.id}))
 
@@ -127,7 +138,7 @@ def create_company(request: HttpRequest) -> HttpResponse:
 
 
 @require_http_methods(["GET", "POST"])
-# @login_required
+@login_required
 def edit_company(request: HttpRequest, company_id: UUID) -> HttpResponse:
 
     company = get_object_or_404(Company, pk=company_id)
@@ -152,6 +163,7 @@ def edit_company(request: HttpRequest, company_id: UUID) -> HttpResponse:
                     'email': email.value if email else '',
                     'phone': phone.value if phone else '',
                     'person': person.value if person else '',
+                    'contract_number': company.wallet.contract_number,
                 }),
                 "company": company,
             },
@@ -159,6 +171,9 @@ def edit_company(request: HttpRequest, company_id: UUID) -> HttpResponse:
 
     if (form := CompanyForm(request.POST, instance=company)).is_valid():
         form.save()
+
+        company.wallet.contract_number = form.cleaned_data.get('contract_number')
+        company.wallet.save()
 
         country.value = form.cleaned_data.get('country')
         country.save()
@@ -238,3 +253,4 @@ def create_bank_accounts(request: HttpRequest, company_id: UUID) -> HttpResponse
         return HttpResponseClientRedirect(reverse("company_detail", kwargs={"company_id": company_id}))
 
     return TemplateResponse(request, "companies/_bank_account_form.html", {"form": form})
+

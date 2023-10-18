@@ -18,3 +18,12 @@ class UUIDModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+COUNTER_TYPE_CHOICES = (
+    ('MAIN_WALLET', 'Основной счет'),
+)
+
+class Counter(models.Model):
+    type: str = models.CharField(max_length=12, choices=COUNTER_TYPE_CHOICES)
+    value: int = models.IntegerField(default=0)

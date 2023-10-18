@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="editor-page">
-        <div class="container box mt-4">
-            <div class="columns">
-                <div class="column">
-                    Добро пожаловать!
-                </div>
+<div class="editor-page">
+    <div class="container box mt-4">
+        <div class="columns">
+            <div class="column">
+                {% if user.is_authenticated %}
+                    <p>Добро пожаловать, {{ user.get_username }}.</p>
+                {% else %}
+                    <p>Пожалуйста, войдите.</p>
+                {% endif %}
             </div>
         </div>
     </div>
+</div>
 {% endblock content %}

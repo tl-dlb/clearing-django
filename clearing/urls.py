@@ -15,6 +15,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path("", include("clearing.accounts.urls")),
     path("", include("clearing.companies.urls")),
     path("", include("clearing.wallets.urls")),
 

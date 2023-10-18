@@ -10,4 +10,5 @@ class FundForm(forms.ModelForm):
         widgets = {
             "payment_number": forms.TextInput(),
             "comment": forms.TextInput(),
+            "payment_type": forms.RadioSelect(),
         }

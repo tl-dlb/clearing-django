@@ -24,13 +24,14 @@ class Fund(UUIDModel, TimestampedModel):
     amount = models.DecimalField(default=0, max_digits=32, decimal_places=2)
     is_active = models.BooleanField(default=True)
     payment_number = models.TextField(null=True)
-    payment_type = models.CharField(max_length=32, choices=FUND_PAYMENT_TYPE_CHOICES, null=True)
+    payment_type = models.CharField(max_length=32, choices=FUND_PAYMENT_TYPE_CHOICES, default='BANK_TRANSFER')
     comment = models.TextField(null=True)
 
 
 class Wallet(UUIDModel, TimestampedModel):
     trader: Company         = models.OneToOneField(Company, on_delete=models.CASCADE, related_name='wallet')
     account_number: str     = models.CharField(max_length=32)
+    contract_number: str    = models.CharField(max_length=512, null=True)
     currency_code: str      = models.CharField(max_length=3, default='KZT')
     deposited_amount: str   = models.DecimalField(default=0, max_digits=32, decimal_places=2)
     holding_amount: float   = models.DecimalField(default=0, max_digits=32, decimal_places=2)
@@ -51,3 +52,5 @@ class Wallet(UUIDModel, TimestampedModel):
         self.locked_amount = locked
         self.available_amount = self.deposited_amount - holding - locked
         self.save()
+
+

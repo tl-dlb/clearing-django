@@ -25,9 +25,10 @@ class CompanyForm(forms.ModelForm):
     email = forms.CharField()
     phone = forms.CharField()
     person = forms.CharField()
+    contract_number = forms.CharField(required=False)
     class Meta:
         model = Company
-        fields = ["type", "legal_form", "name", "bin", "country", "postal_code", "address", "email", "phone", "person"]
+        fields = ["type", "legal_form", "name", "bin", "country", "postal_code", "address", "email", "phone", "person", "contract_number"]
         widgets = {
             "type": forms.Select(choices=COMPANY_TYPE_CHOICES),
             "email": forms.EmailInput(),
