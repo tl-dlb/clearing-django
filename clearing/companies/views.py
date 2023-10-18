@@ -44,7 +44,7 @@ def company_list(request: HttpRequest) -> HttpResponse:
 
 
 @require_http_methods(["GET"])
-# @login_required
+@login_required
 def company_list_search(request: HttpRequest) -> HttpResponse:
 
     companies, search = _search_companies(request)
@@ -124,7 +124,7 @@ def create_company(request: HttpRequest) -> HttpResponse:
 
         wallet = Wallet.objects.create(
             trader=company, 
-            account_number='CLM-' + str(counter.value + 1).zfill(5),
+            account_number='ACC-' + str(counter.value + 1).zfill(5),
             contract_number=form.cleaned_data.get('contract_number'),
         )
         wallet.save()
@@ -206,7 +206,7 @@ def edit_company(request: HttpRequest, company_id: UUID) -> HttpResponse:
 
 
 @require_http_methods(["GET"])
-# @login_required
+@login_required
 def company_detail(request: HttpRequest, company_id: UUID) -> HttpResponse:
 
     company = get_object_or_404(Company, pk=company_id)
@@ -216,7 +216,7 @@ def company_detail(request: HttpRequest, company_id: UUID) -> HttpResponse:
 
 
 @require_http_methods(["GET"])
-# @login_required
+@login_required
 def invert_company_status(request: HttpRequest, company_id: int) -> HttpResponse:
 
     company = get_object_or_404(Company, pk=company_id)
@@ -232,7 +232,7 @@ def invert_company_status(request: HttpRequest, company_id: int) -> HttpResponse
 
 
 @require_http_methods(["GET", "POST"])
-# @login_required
+@login_required
 def create_bank_accounts(request: HttpRequest, company_id: UUID) -> HttpResponse:
 
     company = get_object_or_404(Company, pk=company_id)

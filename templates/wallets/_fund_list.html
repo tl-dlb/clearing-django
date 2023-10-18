@@ -17,7 +17,7 @@
                 {% if funds %}
                     {% for fund in funds %}
                         <tr>
-                            <td>{{ fund.get_type_display }}</td>
+                            <td><span class="{% if fund.type == 'INCOMING' %}has-text-success-dark{% else %}has-text-danger-dark{% endif %}">{{ fund.get_type_display }}</span></td>
                             <td>{{ fund.amount|intcomma }}</td>
                             <td>{{ fund.created_at|date:"d.m.Y H:i" }}</td>
                             <td>{{ fund.payment_number|default_if_none:"--" }}</td>

@@ -25,7 +25,12 @@
                             <td>{{ company.wallet.holding_amount|intcomma }}</td>
                             <td>{{ company.wallet.locked_amount|intcomma }}</td>
                             <td>{{ company.wallet.available_amount|intcomma }}</td>
-                            <td>{{ company.get_status_display }}</td>
+                            <td>
+                                <span 
+                                    class="{% if company.status == 'ACTIVE' %}has-text-success-dark{% elif company.status == 'BLOCKED' %}has-text-danger-dark{% else %}has-text-info-dark{% endif %}">
+                                    {{ company.get_status_display }}
+                                </span>
+                            </td>
                         </tr>
                     {% endfor %}
                 {% else %}

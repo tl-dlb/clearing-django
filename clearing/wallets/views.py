@@ -14,7 +14,7 @@ from .models import Wallet
 
 
 @require_http_methods(["GET"])
-# @login_required
+@login_required
 def fund_list(request: HttpRequest, wallet_id: UUID) -> HttpResponse:
 
     wallet, funds, search = _search_funds(request, wallet_id)
@@ -28,7 +28,7 @@ def fund_list(request: HttpRequest, wallet_id: UUID) -> HttpResponse:
 
 
 @require_http_methods(["GET"])
-# @login_required
+@login_required
 def fund_list_search(request: HttpRequest, wallet_id: UUID) -> HttpResponse:
 
     wallet, funds, search = _search_funds(request, wallet_id)
@@ -49,7 +49,9 @@ def _search_funds(request, wallet_id):
     funds = wallet.funds.filter(Q(type='INCOMING')|Q(type='OUTGOING')).order_by('-created_at').all()
     if search:
         funds = funds.filter(
-            Q(amount__icontains=request.GET.get('search')) 
+            Q(amount__icontains=request.GET.get('search')) |
+            Q(payment_number__icontains=request.GET.get('search')) |
+            Q(comment__icontains=request.GET.get('search'))
         )
 
     paginator = Paginator(funds, 20)
@@ -64,7 +66,7 @@ def _search_funds(request, wallet_id):
 
 
 @require_http_methods(["GET", "POST"])
-# @login_required
+@login_required
 def create_fund(request: HttpRequest, wallet_id: UUID, fund_type: str) -> HttpResponse:
 
     wallet = get_object_or_404(Wallet, pk=wallet_id)
