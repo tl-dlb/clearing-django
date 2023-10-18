@@ -15,18 +15,54 @@ from .models import Wallet
 
 @require_http_methods(["GET"])
 # @login_required
-def fund_list(request: HttpRequest) -> HttpResponse:
+def fund_list(request: HttpRequest, wallet_id: UUID) -> HttpResponse:
 
-    companies, search = _search_companies(request)
-    context = {"companies": companies, "search": search}
+    wallet, funds, search = _search_funds(request, wallet_id)
+    context = {"wallet": wallet, "funds": funds, "search": search}
 
     return TemplateResponse(
         request,
-        "companies/company_list.html",
+        "wallets/fund_list.html",
         context,
     )
 
-# Create your views here.
+
+@require_http_methods(["GET"])
+# @login_required
+def fund_list_search(request: HttpRequest, wallet_id: UUID) -> HttpResponse:
+
+    wallet, funds, search = _search_funds(request, wallet_id)
+    context = {"wallet": wallet, "funds": funds, "search": search}
+
+    return TemplateResponse(
+        request,
+        "wallets/_fund_list.html",
+        context,
+    )
+
+
+def _search_funds(request, wallet_id):
+
+    search = request.GET.get("search")
+    page = request.GET.get("page")
+    wallet = Wallet.objects.get(id=wallet_id)
+    funds = wallet.funds.filter(Q(type='INCOMING')|Q(type='OUTGOING')).order_by('-created_at').all()
+    if search:
+        funds = funds.filter(
+            Q(amount__icontains=request.GET.get('search')) 
+        )
+
+    paginator = Paginator(funds, 20)
+    try:
+        funds = paginator.page(page)
+    except PageNotAnInteger:
+        funds = paginator.page(1)
+    except EmptyPage:
+        funds = paginator.page(paginator.num_pages)
+
+    return wallet, funds, search or ""
+
+
 @require_http_methods(["GET", "POST"])
 # @login_required
 def create_fund(request: HttpRequest, wallet_id: UUID, fund_type: str) -> HttpResponse:
@@ -48,6 +84,6 @@ def create_fund(request: HttpRequest, wallet_id: UUID, fund_type: str) -> HttpRe
         wallet.funds.add(fund)
         wallet.calculate()
 
-        return HttpResponseClientRedirect(reverse("company_detail", kwargs={"company_id": wallet.trader.id}))
+        return HttpResponseClientRedirect(reverse("fund_list", kwargs={"wallet_id": wallet.id}))
 
     return TemplateResponse(request, "wallets/_fund_form.html", {"form": form, "wallet": wallet, "fund_type": fund_type})

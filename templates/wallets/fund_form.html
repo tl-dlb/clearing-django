@@ -6,11 +6,11 @@
             <div class="column">
                 <div class="columns is-flex is-vcentered">
                     <div class="column is-narrow">
-                        <h5 class="is-size-5 has-text-weight-semibold">{% if fund_type == 'INCOMING' %}Внести{% else %}Снять{% endif %} средства на счёт компании {{ wallet.trader.full_name}}</h5>
+                        <h5 class="is-size-5 has-text-weight-semibold">{% if fund_type == 'INCOMING' %}Внести средства на счёт{% else %}Снять средства со счёта{% endif %}  компании {{ wallet.trader.full_name}}</h5>
                     </div>
                     <div class="column is-narrow">
                         <div class="buttons">
-                            <a href="{% url 'company_detail' wallet.trader.id %}" class="button is-small is-outlined is-rounded">Назад</a>
+                            <a href="{% url 'fund_list' wallet.id %}" class="button is-small is-outlined is-rounded">Назад</a>
                         </div>  
                     </div>
                 </div>

@@ -12,12 +12,58 @@
 
     <fieldset class="field is-horizontal">
         <div class="field-label is-normal has-text-left">
+            <label class="label">Вид платежа</label>
+        </div>
+        <div class="field-body">
+            <div class="field is-narrow">
+                <div class="control">
+                    <label class="radio">
+                        <input type="radio" name="payment_type" value="BANK_TRANSFER">
+                        Безналичный перевод
+                    </label>
+                    <label class="radio">
+                        <input type="radio" name="payment_type" value="CASH_PAYMENT">
+                        Наличные
+                    </label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
             <label class="label">Сумма</label>
+        </div>
+        <div class="field-body  is-normal">
+            <div class="field">
+                <div class="control">
+                    {% render_field form.amount class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">Платёжный документ</label>
+        </div>
+        <div class="field-body is-normal">
+            <div class="field">
+                <div class="control">
+                    {% render_field form.payment_number class+="input" %}
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="field is-horizontal">
+        <div class="field-label is-normal has-text-left">
+            <label class="label">Комментарий</label>
         </div>
         <div class="field-body">
             <div class="field">
                 <div class="control">
-                    {% render_field form.amount class+="input" %}
+                    {% render_field form.comment class+="input" %}
                 </div>
             </div>
         </div>

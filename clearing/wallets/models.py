@@ -13,11 +13,19 @@ FUNDS_TYPE_CHOICES = (
     ('LOCKED', 'Заблокированные средства')
 )
 
+FUND_PAYMENT_TYPE_CHOICES = (
+    ('BANK_TRANSFER', 'Безналичный перевод'),
+    ('CASH_PAYMENT', 'Наличные')
+)
+
 
 class Fund(UUIDModel, TimestampedModel):
-    type   = models.CharField(max_length=32, choices=FUNDS_TYPE_CHOICES)
+    type = models.CharField(max_length=32, choices=FUNDS_TYPE_CHOICES)
     amount = models.DecimalField(default=0, max_digits=32, decimal_places=2)
     is_active = models.BooleanField(default=True)
+    payment_number = models.TextField(null=True)
+    payment_type = models.CharField(max_length=32, choices=FUND_PAYMENT_TYPE_CHOICES, null=True)
+    comment = models.TextField(null=True)
 
 
 class Wallet(UUIDModel, TimestampedModel):
@@ -33,8 +41,13 @@ class Wallet(UUIDModel, TimestampedModel):
 
 
     def calculate(self):
-        incoming = self.funds.filter(type='INCOMING').aggregate(total=Sum("amount"))['total']
-        outgoing = self.funds.filter(type='OUTGOING').aggregate(total=Sum("amount"))['total']
+        query = self.funds.filter(is_active=True)
+        incoming = query.filter(type='INCOMING').aggregate(total=Sum("amount"))['total'] or 0
+        outgoing = query.filter(type='OUTGOING').aggregate(total=Sum("amount"))['total'] or 0
+        holding = query.filter(type='HOLDING').aggregate(total=Sum("amount"))['total'] or 0
+        locked = query.filter(type='LOCKED').aggregate(total=Sum("amount"))['total'] or 0
         self.deposited_amount = incoming - outgoing
-        self.available_amount = self.deposited_amount
+        self.holding_amount = holding
+        self.locked_amount = locked
+        self.available_amount = self.deposited_amount - holding - locked
         self.save()

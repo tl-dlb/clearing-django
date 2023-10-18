@@ -40,8 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     "django_htmx",
     "widget_tweaks",
+    'rest_framework',
+    'django_filters',
+    'drf_yasg',
     'clearing.companies',
     'clearing.wallets',
+    'clearing.apis',
 ]
 
 MIDDLEWARE = [

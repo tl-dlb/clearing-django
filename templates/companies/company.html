@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 {% block content %}
 <div class="article-page" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <div class="container py-4">
@@ -28,7 +29,6 @@
                     {% include "companies/_company.html" %}
                 </div>
                 
-
                 <div class="box">
                     <div class="columns is-flex is-vcentered">
                         <div class="column is-narrow">
@@ -74,8 +74,7 @@
                         </div>
                         <div class="column is-narrow">
                             <div class="buttons">
-                                <a href="{% url 'create_fund' company.wallet.id 'INCOMING' %}" class="button is-small is-primary is-outlined is-rounded">Внести</a>
-                                <a href="{% url 'create_fund' company.wallet.id 'OUTGOING' %}" class="button is-small is-danger is-outlined is-rounded">Снять</a>
+                                <a href="{% url 'fund_list' company.wallet.id  %}" class="button is-small is-info is-outlined is-rounded">Список операций</a>
                             </div>                      
                         </div>
                     </div>
@@ -96,10 +95,10 @@
                                 <tr>
                                     <td>{{ company.wallet.account_number }}</td>
                                     <td>{{ company.wallet.account_number }}</td>
-                                    <td>{{ company.wallet.deposited_amount }}</td>
-                                    <td>{{ company.wallet.holding_amount }}</td>
-                                    <td>{{ company.wallet.locked_amount }}</td>
-                                    <td>{{ company.wallet.available_amount }}</td>
+                                    <td>{{ company.wallet.deposited_amount|intcomma }}</td>
+                                    <td>{{ company.wallet.holding_amount|intcomma }}</td>
+                                    <td>{{ company.wallet.locked_amount|intcomma }}</td>
+                                    <td>{{ company.wallet.available_amount|intcomma }}</td>
                                 </tr>
                             </tbody>
                         </table>

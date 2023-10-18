@@ -40,7 +40,7 @@
             <a class="pagination-previous"
                 hx-get="{% url 'company_list_search' %}" 
                 hx-trigger="click"
-                hx-target="#company-list"
+                hx-target="#company-list-view"
                 hx-swap="outerHTML"
                 hx-vals='{"page": "{{ companies.previous_page_number }}", "search": "{{ search }}"}'
                 >Пред.
@@ -53,7 +53,7 @@
             <a class="pagination-next"
                 hx-get="{% url 'company_list_search' %}" 
                 hx-trigger="click"
-                hx-target="#company-list"
+                hx-target="#company-list-view"
                 hx-swap="outerHTML"
                 hx-vals='{"page": "{{ companies.next_page_number }}", "search": "{{ search }}"}'
                 >След.

@@ -1,31 +1,29 @@
 {% load humanize %}
-<div id="company-list-view">
+<div id="fund-list-view">
     <div class="table-container">
         <table class="table is-bordered is-striped is-hoverable is-fullwidth">
             <thead>
                 <tr>
-                    <th>Роль</th>
+                    <th>Тип операции</th>
                     <th>Название</th>
-                    <th>БИН</th>
-                    <th>Внесено</th>
-                    <th>Заморожено</th>
-                    <th>Заблокировано</th>
-                    <th>Свободно</th>
-                    <th>Статус</th>
+                    <th>Дата и время создания</th>
+                    <th>Платёжный документ</th>
+                    <th>Вид платежа</th>
+                    <th>Комментарий</th>
+                    <th>Приложение</th>
                 </tr>
             </thead>
             <tbody>
-                {% if companies %}
-                    {% for company in companies %}
+                {% if funds %}
+                    {% for fund in funds %}
                         <tr>
-                            <td>{{ company.get_type_display }}</td>
-                            <td><a href="{% url 'company_detail' company.id %}">{{ company.full_name }}</a></td>
-                            <td>{{ company.bin|default_if_none:"--" }}</td>
-                            <td>{{ company.wallet.deposited_amount|intcomma }}</td>
-                            <td>{{ company.wallet.holding_amount|intcomma }}</td>
-                            <td>{{ company.wallet.locked_amount|intcomma }}</td>
-                            <td>{{ company.wallet.available_amount|intcomma }}</td>
-                            <td>{{ company.get_status_display }}</td>
+                            <td>{{ fund.get_type_display }}</td>
+                            <td>{{ fund.amount|intcomma }}</td>
+                            <td>{{ fund.created_at|date:"d.m.Y H:i" }}</td>
+                            <td>{{ fund.payment_number|default_if_none:"--" }}</td>
+                            <td>{{ fund.get_payment_type_display|default_if_none:"--" }}</td>
+                            <td>{{ fund.comment|default_if_none:"--" }}</td>
+                            <td></td>
                         </tr>
                     {% endfor %}
                 {% else %}
@@ -36,26 +34,26 @@
     </div>
 
     <nav class="pagination is-right" role="navigation" aria-label="pagination">
-        {% if companies.has_previous  %}
+        {% if funds.has_previous  %}
             <a class="pagination-previous"
-                hx-get="{% url 'company_list_search' %}" 
+                hx-get="{% url 'fund_list_search' wallet.id %}" 
                 hx-trigger="click"
-                hx-target="#company-list"
+                hx-target="#fund-list-view"
                 hx-swap="outerHTML"
-                hx-vals='{"page": "{{ companies.previous_page_number }}", "search": "{{ search }}"}'
+                hx-vals='{"page": "{{ funds.previous_page_number }}", "search": "{{ search }}"}'
                 >Пред.
             </a>
         {% else %}
             <a class="pagination-previous is-disabled">Пред.</a>
         {% endif %}
         
-        {% if companies.has_next %}
+        {% if funds.has_next %}
             <a class="pagination-next"
-                hx-get="{% url 'company_list_search' %}" 
+                hx-get="{% url 'fund_list_search' wallet.id %}" 
                 hx-trigger="click"
-                hx-target="#company-list"
+                hx-target="#fund-list-view"
                 hx-swap="outerHTML"
-                hx-vals='{"page": "{{ companies.next_page_number }}", "search": "{{ search }}"}'
+                hx-vals='{"page": "{{ funds.next_page_number }}", "search": "{{ search }}"}'
                 >След.
             </a>
         {% else %}
@@ -64,9 +62,9 @@
         <ul class="pagination-list"></ul>
     </nav>
 
-    {% if companies.paginator.count %}
+    {% if funds.paginator.count %}
         <div class="block">
-            <span class="is-size-6">{{ companies.start_index }} - {{ companies.end_index }} из {{ companies.paginator.count }}</span>
+            <span class="is-size-6">{{ funds.start_index }} - {{ funds.end_index }} из {{ funds.paginator.count }}</span>
         </div>
     {% endif %}
     
