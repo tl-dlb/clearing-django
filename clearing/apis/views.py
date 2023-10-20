@@ -23,7 +23,7 @@ class WalletView(viewsets.ModelViewSet):
             wallet = queryset.get(trader__bin=bin)
             serializer = self.get_serializer(wallet)
             
-            return Response({"wallet": serializer.data})
+            return Response(serializer.data)
             
         except Exception:
             return Response({"errors": {
