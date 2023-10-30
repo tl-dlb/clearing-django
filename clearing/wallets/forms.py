@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
 from .models import Fund
 
@@ -12,3 +13,10 @@ class FundForm(forms.ModelForm):
             "comment": forms.TextInput(),
             "payment_type": forms.RadioSelect(),
         }
+
+    def clean_amount(self):
+        data = self.cleaned_data['amount']
+        if data <= 0:
+            raise ValidationError('ValidationError.')
+        return data
+

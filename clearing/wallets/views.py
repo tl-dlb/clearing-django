@@ -15,44 +15,118 @@ from .models import Wallet
 
 @require_http_methods(["GET"])
 @login_required
-def fund_list(request: HttpRequest, wallet_id: UUID) -> HttpResponse:
+def io_fund_list(request: HttpRequest, wallet_id: UUID) -> HttpResponse:
 
-    wallet, funds, search = _search_funds(request, wallet_id)
+    wallet, funds, search = _search_funds(request, wallet_id, 'IO')
     context = {"wallet": wallet, "funds": funds, "search": search}
 
     return TemplateResponse(
         request,
-        "wallets/fund_list.html",
+        "wallets/io_fund_list.html",
         context,
     )
 
 
 @require_http_methods(["GET"])
 @login_required
-def fund_list_search(request: HttpRequest, wallet_id: UUID) -> HttpResponse:
+def io_fund_list_search(request: HttpRequest, wallet_id: UUID) -> HttpResponse:
 
-    wallet, funds, search = _search_funds(request, wallet_id)
+    wallet, funds, search = _search_funds(request, wallet_id, 'IO')
     context = {"wallet": wallet, "funds": funds, "search": search}
 
     return TemplateResponse(
         request,
-        "wallets/_fund_list.html",
+        "wallets/_io_fund_list.html",
         context,
     )
 
 
-def _search_funds(request, wallet_id):
+@require_http_methods(["GET"])
+@login_required
+def holding_fund_list(request: HttpRequest, wallet_id: UUID) -> HttpResponse:
+
+    wallet, funds, search = _search_funds(request, wallet_id, 'HOLDING')
+    context = {"wallet": wallet, "funds": funds, "search": search}
+
+    return TemplateResponse(
+        request,
+        "wallets/holding_fund_list.html",
+        context,
+    )
+
+
+@require_http_methods(["GET"])
+@login_required
+def holding_fund_list_search(request: HttpRequest, wallet_id: UUID) -> HttpResponse:
+
+    wallet, funds, search = _search_funds(request, wallet_id, 'HOLDING')
+    context = {"wallet": wallet, "funds": funds, "search": search}
+
+    return TemplateResponse(
+        request,
+        "wallets/_holding_fund_list.html",
+        context,
+    )
+
+
+@require_http_methods(["GET"])
+@login_required
+def locked_fund_list(request: HttpRequest, wallet_id: UUID) -> HttpResponse:
+
+    wallet, funds, search = _search_funds(request, wallet_id, 'LOCKED')
+    context = {"wallet": wallet, "funds": funds, "search": search}
+
+    return TemplateResponse(
+        request,
+        "wallets/locked_fund_list.html",
+        context,
+    )
+
+
+@require_http_methods(["GET"])
+@login_required
+def locked_fund_list_search(request: HttpRequest, wallet_id: UUID) -> HttpResponse:
+
+    wallet, funds, search = _search_funds(request, wallet_id, 'LOCKED')
+    context = {"wallet": wallet, "funds": funds, "search": search}
+
+    return TemplateResponse(
+        request,
+        "wallets/_locked_fund_list.html",
+        context,
+    )
+
+
+def _search_funds(request, wallet_id, type):
 
     search = request.GET.get("search")
     page = request.GET.get("page")
     wallet = Wallet.objects.get(id=wallet_id)
-    funds = wallet.funds.filter(Q(type='INCOMING')|Q(type='OUTGOING')).order_by('-created_at').all()
-    if search:
-        funds = funds.filter(
-            Q(amount__icontains=request.GET.get('search')) |
-            Q(payment_number__icontains=request.GET.get('search')) |
-            Q(comment__icontains=request.GET.get('search'))
-        )
+    funds = wallet.funds
+    if type == 'IO':
+        funds = funds.filter(Q(type='INCOMING')|Q(type='OUTGOING')).order_by('-created_at').all()
+        if search:
+            funds = funds.filter(
+                Q(amount__icontains=request.GET.get('search')) |
+                Q(payment_number__icontains=request.GET.get('search')) |
+                Q(comment__icontains=request.GET.get('search'))
+            )
+    elif type == 'HOLDING':
+        funds = funds.filter(type='HOLDING').order_by('-created_at').all()
+        if search:
+            funds = funds.filter(
+                Q(amount__icontains=request.GET.get('search')) |
+                Q(platform__icontains=request.GET.get('search')) 
+            )
+    elif type == 'LOCKED':
+        funds = funds.filter(type='LOCKED').order_by('-created_at').all()
+        if search:
+            funds = funds.filter(
+                Q(amount__icontains=request.GET.get('search')) |
+                Q(platform__icontains=request.GET.get('search')) 
+            )
+
+    
 
     paginator = Paginator(funds, 20)
     try:
@@ -67,7 +141,7 @@ def _search_funds(request, wallet_id):
 
 @require_http_methods(["GET", "POST"])
 @login_required
-def create_fund(request: HttpRequest, wallet_id: UUID, fund_type: str) -> HttpResponse:
+def create_io_fund(request: HttpRequest, wallet_id: UUID, fund_type: str) -> HttpResponse:
 
     wallet = get_object_or_404(Wallet, pk=wallet_id)
 

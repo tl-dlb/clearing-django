@@ -17,7 +17,7 @@
             <div class="column"></div>
             <div class="column is-one-third">
                 <form 
-                    hx-get="{% url 'fund_list_search' wallet.id %}" 
+                    hx-get="{% url 'io_fund_list_search' wallet.id %}" 
                     hx-target="#fund-list-view"
                     hx-trigger="submit, input delay:0.3s" 
                     hx-swap="outerHTML">
@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        {% include "wallets/_fund_list.html" %}
+        {% include "wallets/_io_fund_list.html" %}
 
     </div>
 </div>

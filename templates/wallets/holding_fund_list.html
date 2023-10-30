@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="list-page" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <div class="container box mt-4">
+
+        <div class="columns is-flex is-vcentered">
+            <div class="column is-narrow">
+                <h5 class="is-size-5 has-text-weight-semibold">{{ wallet.account_number }}</h5>
+            </div>
+            <div class="column is-narrow">
+                <div class="buttons">
+                    <a href="{% url 'company_detail' wallet.trader.id %}" class="button is-small is-outlined is-rounded">Назад</a>
+                </div>    
+            </div>
+            <div class="column"></div>
+            <div class="column is-one-third">
+                <form 
+                    hx-get="{% url 'holding_fund_list_search' wallet.id %}" 
+                    hx-target="#fund-list-view"
+                    hx-trigger="submit, input delay:0.3s" 
+                    hx-swap="outerHTML">
+
+                    <div class="control">
+                        <input name="search" type="text" class="input" placeholder="Сумма, Платформа" />
+                    </div>
+                </form>                          
+            </div>
+        </div>
+
+        {% include "wallets/_holding_fund_list.html" %}
+
+    </div>
+</div>
+
+<script>
+flatpickr('.datetime', {locale: 'ru', dateFormat: 'd.m.Y'});
+</script>
+
+{% endblock content %}

@@ -1,5 +1,6 @@
 {% load humanize %}
 <div id="fund-list-view">
+    <p class="is-size-5 mb-4">Заблокировано: {{ wallet.locked_amount|intcomma }}</p>
     <div class="table-container">
         <table class="table is-bordered is-striped is-hoverable is-fullwidth">
             <thead>
@@ -7,23 +8,17 @@
                     <th>Тип операции</th>
                     <th>Название</th>
                     <th>Дата и время создания</th>
-                    <th>Платёжный документ</th>
-                    <th>Вид платежа</th>
-                    <th>Комментарий</th>
-                    <th>Приложение</th>
+                    <th>Платформа</th>
                 </tr>
             </thead>
             <tbody>
                 {% if funds %}
                     {% for fund in funds %}
                         <tr>
-                            <td><span class="{% if fund.type == 'INCOMING' %}has-text-success-dark{% else %}has-text-danger-dark{% endif %}">{{ fund.get_type_display }}</span></td>
+                            <td>{{ fund.get_type_display }}</td>
                             <td>{{ fund.amount|intcomma }}</td>
                             <td>{{ fund.created_at|date:"d.m.Y H:i" }}</td>
-                            <td>{{ fund.payment_number|default_if_none:"--" }}</td>
-                            <td>{{ fund.get_payment_type_display|default_if_none:"--" }}</td>
-                            <td>{{ fund.comment|default_if_none:"--" }}</td>
-                            <td></td>
+                            <td>{{ fund.platform|default_if_none:"--" }}</td>
                         </tr>
                     {% endfor %}
                 {% else %}
@@ -36,7 +31,7 @@
     <nav class="pagination is-right" role="navigation" aria-label="pagination">
         {% if funds.has_previous  %}
             <a class="pagination-previous"
-                hx-get="{% url 'fund_list_search' wallet.id %}" 
+                hx-get="{% url 'locked_fund_list_search' wallet.id %}" 
                 hx-trigger="click"
                 hx-target="#fund-list-view"
                 hx-swap="outerHTML"
@@ -49,7 +44,7 @@
         
         {% if funds.has_next %}
             <a class="pagination-next"
-                hx-get="{% url 'fund_list_search' wallet.id %}" 
+                hx-get="{% url 'locked_fund_list_search' wallet.id %}" 
                 hx-trigger="click"
                 hx-target="#fund-list-view"
                 hx-swap="outerHTML"

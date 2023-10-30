@@ -1,0 +1,72 @@
+{% load humanize %}
+<div id="fund-list-view">
+    <p class="is-size-5 mb-4">Внесено: {{ wallet.deposited_amount|intcomma }}</p>
+    <div class="table-container">
+        <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Тип операции</th>
+                    <th>Название</th>
+                    <th>Дата и время создания</th>
+                    <th>Платёжный документ</th>
+                    <th>Вид платежа</th>
+                    <th>Комментарий</th>
+                    <th>Приложение</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if funds %}
+                    {% for fund in funds %}
+                        <tr>
+                            <td><span class="{% if fund.type == 'INCOMING' %}has-text-success-dark{% else %}has-text-danger-dark{% endif %}">{{ fund.get_type_display }}</span></td>
+                            <td>{{ fund.amount|intcomma }}</td>
+                            <td>{{ fund.created_at|date:"d.m.Y H:i" }}</td>
+                            <td>{{ fund.payment_number|default_if_none:"--" }}</td>
+                            <td>{{ fund.get_payment_type_display|default_if_none:"--" }}</td>
+                            <td>{{ fund.comment|default_if_none:"--" }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="9">Ничего не найдено</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <nav class="pagination is-right" role="navigation" aria-label="pagination">
+        {% if funds.has_previous  %}
+            <a class="pagination-previous"
+                hx-get="{% url 'io_fund_list_search' wallet.id %}" 
+                hx-trigger="click"
+                hx-target="#fund-list-view"
+                hx-swap="outerHTML"
+                hx-vals='{"page": "{{ funds.previous_page_number }}", "search": "{{ search }}"}'
+                >Пред.
+            </a>
+        {% else %}
+            <a class="pagination-previous is-disabled">Пред.</a>
+        {% endif %}
+        
+        {% if funds.has_next %}
+            <a class="pagination-next"
+                hx-get="{% url 'io_fund_list_search' wallet.id %}" 
+                hx-trigger="click"
+                hx-target="#fund-list-view"
+                hx-swap="outerHTML"
+                hx-vals='{"page": "{{ funds.next_page_number }}", "search": "{{ search }}"}'
+                >След.
+            </a>
+        {% else %}
+            <a class="pagination-next is-disabled">След.</a>
+        {% endif %}
+        <ul class="pagination-list"></ul>
+    </nav>
+
+    {% if funds.paginator.count %}
+        <div class="block">
+            <span class="is-size-6">{{ funds.start_index }} - {{ funds.end_index }} из {{ funds.paginator.count }}</span>
+        </div>
+    {% endif %}
+    
+</div>
