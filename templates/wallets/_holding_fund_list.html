@@ -9,6 +9,8 @@
                     <th>Название</th>
                     <th>Дата и время создания</th>
                     <th>Платформа</th>
+                    <th>Комментарий</th>
+                    <th>Статус</th>
                 </tr>
             </thead>
             <tbody>
@@ -19,6 +21,8 @@
                             <td>{{ fund.amount|intcomma }}</td>
                             <td>{{ fund.created_at|date:"d.m.Y H:i" }}</td>
                             <td>{{ fund.platform|default_if_none:"--" }}</td>
+                            <td>{{ fund.comment|default_if_none:"--" }}</td>
+                            <td><span class="{% if fund.is_active %}has-text-danger-dark{% else %}has-text-success-dark{% endif %}">{{ fund.is_active|yesno:"Заморожено,Освобождено" }}</span></td>
                         </tr>
                     {% endfor %}
                 {% else %}

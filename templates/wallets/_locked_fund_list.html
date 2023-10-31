@@ -1,6 +1,6 @@
 {% load humanize %}
-<div id="fund-list-view">
-    <p class="is-size-5 mb-4">Заблокировано: {{ wallet.locked_amount|intcomma }}</p>
+<div id="fund-list-view" x-data="{ locked: '{{wallet.locked_amount}}' }">
+    <p class="is-size-5 mb-4">Заблокировано: <span x-text="Number(locked.replace(',','.')).toLocaleString('ru-RU',{minimumFractionDigits:2})"></span></p>
     <div class="table-container">
         <table class="table is-bordered is-striped is-hoverable is-fullwidth">
             <thead>
@@ -9,6 +9,8 @@
                     <th>Название</th>
                     <th>Дата и время создания</th>
                     <th>Платформа</th>
+                    <th>Комментарий</th>
+                    <th>Статус</th>
                 </tr>
             </thead>
             <tbody>
@@ -19,6 +21,8 @@
                             <td>{{ fund.amount|intcomma }}</td>
                             <td>{{ fund.created_at|date:"d.m.Y H:i" }}</td>
                             <td>{{ fund.platform|default_if_none:"--" }}</td>
+                            <td>{{ fund.comment|default_if_none:"--" }}</td>
+                            <td>{% include "wallets/_action_btn.html" with wallet=wallet %}</td>
                         </tr>
                     {% endfor %}
                 {% else %}

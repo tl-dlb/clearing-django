@@ -77,6 +77,7 @@ class FundView(viewsets.ModelViewSet):
             platform=input_serializer.data.get('platform'),
             type='HOLDING', 
             amount=amount,
+            comment=input_serializer.data.get('comment'),
         )
         wallet.funds.add(fund)
         wallet.calculate()
@@ -147,6 +148,7 @@ class FundView(viewsets.ModelViewSet):
             platform=holding_fund.platform,
             type='LOCKED', 
             amount=holding_fund.amount,
+            comment=input_serializer.data.get('comment'),
         )
 
         wallet.funds.add(locked_fund)

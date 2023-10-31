@@ -13,4 +13,6 @@ urlpatterns = [
 
     path("wallets/<uuid:wallet_id>/locked/", views.locked_fund_list, name="locked_fund_list"),
     path("wallets/<uuid:wallet_id>/locked/search/", views.locked_fund_list_search, name="locked_fund_list_search"),
+
+    path("wallets/<uuid:wallet_id>/funds/invert_status/<uuid:fund_id>/", views.invert_fund_status, name="invert_fund_status"),
 ]

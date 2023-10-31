@@ -21,6 +21,7 @@ class HoldFundSerializer(serializers.Serializer):
     platform = serializers.CharField()
     account_number = serializers.CharField()   
     amount = serializers.DecimalField(max_digits=32, decimal_places=2)
+    comment = serializers.CharField(required=False)
 
 
 class FreeFundSerializer(serializers.Serializer):
@@ -30,4 +31,5 @@ class FreeFundSerializer(serializers.Serializer):
 
 class LockFundSerializer(serializers.Serializer):
     account_number = serializers.CharField()  
-    id = serializers.UUIDField()   
+    id = serializers.UUIDField() 
+    comment = serializers.CharField(required=False)  

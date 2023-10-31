@@ -10,7 +10,7 @@ from django_htmx.http import HttpResponseClientRedirect
 from uuid import UUID
 
 from .forms import FundForm
-from .models import Wallet
+from .models import Wallet, Fund
 
 
 @require_http_methods(["GET"])
@@ -163,3 +163,27 @@ def create_io_fund(request: HttpRequest, wallet_id: UUID, fund_type: str) -> Htt
         return HttpResponseClientRedirect(reverse("fund_list", kwargs={"wallet_id": wallet.id}))
 
     return TemplateResponse(request, "wallets/_fund_form.html", {"form": form, "wallet": wallet, "fund_type": fund_type})
+
+
+@require_http_methods(["POST"])
+@login_required
+def invert_fund_status(request: HttpRequest, wallet_id: UUID, fund_id: UUID) -> HttpResponse:
+
+    wallet = get_object_or_404(Wallet, pk=wallet_id)
+
+    fund = get_object_or_404(Fund, pk=fund_id)
+
+    fund.is_active = not fund.is_active
+
+    fund.save()
+
+    wallet.calculate()
+
+    return TemplateResponse(
+        request,
+        "wallets/_action_btn.html",
+        {
+            "wallet": wallet,
+            "fund": fund,
+        },
+    )
