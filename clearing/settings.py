@@ -87,10 +87,15 @@ WSGI_APPLICATION = 'clearing.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'NAME': 'postgres',
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'db',
+        'PORT': '5432',
+        'USER': 'postgres',
+        'PASSWORD': '0000',
+    },
 }
+
 
 
 # Password validation
