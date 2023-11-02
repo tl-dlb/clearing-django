@@ -160,7 +160,7 @@ def create_io_fund(request: HttpRequest, wallet_id: UUID, fund_type: str) -> Htt
         wallet.funds.add(fund)
         wallet.calculate()
 
-        return HttpResponseClientRedirect(reverse("fund_list", kwargs={"wallet_id": wallet.id}))
+        return HttpResponseClientRedirect(reverse("io_fund_list", kwargs={"wallet_id": wallet.id}))
 
     return TemplateResponse(request, "wallets/_fund_form.html", {"form": form, "wallet": wallet, "fund_type": fund_type})
 
