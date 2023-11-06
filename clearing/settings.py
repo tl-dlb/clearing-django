@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-%9ufu92)(x9y7zxd$epudk#w41cj-&u@g=9-97)jc0l2rsymhz
 DEBUG = True
 
 ALLOWED_HOSTS = ['host.docker.internal', 'localhost', '192.168.200.68', 'cl.tsst.kz', 'cltsst.webmts.net']
-CSRF_TRUSTED_ORIGINS = ['cl.tsst.kz', 'cltsst.webmts.net'] 
+CSRF_TRUSTED_ORIGINS = ['https://cl.tsst.kz', 'https://cltsst.webmts.net'] 
 
 
 # Application definition
